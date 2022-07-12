@@ -1,1 +1,6 @@
 theme: jekyll-theme-cayman
+
+deploy:
+  type: git
+  repository: https://github.com/MO-OF/MO-OF.github.io
+  branch: main
