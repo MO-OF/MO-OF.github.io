@@ -27,7 +27,7 @@
   <meta name="keywords" content="端口映射,重定向,Nginx" />
 
 
-<link rel="canonical" href="https://mo-of.github.io/nginx_redirect_abnormal_due_to_port_mapping/">
+<link rel="canonical" href="https://mo-of.github.io/abnormal-repair/nginx_redirect_abnormal_due_to_port_mapping/">
 
 
 
@@ -117,12 +117,12 @@ MO-OF = </title>
       </div>
       <div id="imgs" class="pjax">
         <ul>
-          <li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1gicm0fdw5cj20zk0m8hdt.jpg"></li>
-          <li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1giph4lm9i7j20zk0m84qp.jpg"></li>
-          <li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1giclflwv2aj20zk0m84qp.jpg"></li>
-          <li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1giclh5u05ej20zk0m87df.jpg"></li>
-          <li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1giclx29mstj20zk0m8hdt.jpg"></li>
-          <li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1giciusoyjnj219g0u0x56.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1giclx6phq6j20zk0m8e36.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gipevgoki5j20zk0m84qp.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gipeyhsblkj20zk0m81kx.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1giciundwu5j20zk0m8n9e.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gipesx5fdwj20zk0m81kx.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1giciuja1j1j20zk0m8kjl.jpg"></li>
         </ul>
       </div>
     </header>
@@ -153,7 +153,7 @@ MO-OF = </title>
 </div>
 
     <article itemscope itemtype="http://schema.org/Article" class="post block" lang="zh-CN">
-  <link itemprop="mainEntityOfPage" href="https://mo-of.github.io/nginx_redirect_abnormal_due_to_port_mapping/">
+  <link itemprop="mainEntityOfPage" href="https://mo-of.github.io/abnormal-repair/nginx_redirect_abnormal_due_to_port_mapping/">
 
   <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="image" content="/images/avatar.jpg">
@@ -181,7 +181,7 @@ MO-OF = </title>
 </li>
 <li>
 <p>因此，若进行了端口映射的情况下，通过指定端口对靶机进行了一次请求，因 nginx 自身默认的绝对路径重定向导致相应的 url 端口进行了变动（由外网映射端口变更为内网端口）。则会造成 url 寻址错误。</p>
-<p><img data-src="https://raw.githubusercontent.com/MO-OF/MO_Img/main//%E5%9B%A0%E7%AB%AF%E5%8F%A3%E6%98%A0%E5%B0%84%E9%80%A0%E6%88%90Nginx%E9%87%8D%E5%AE%9A%E5%90%91%E5%BC%82%E5%B8%B8/1.png" alt=""></p>
+<p><img data-src="https://raw.githubusercontent.com/MO-OF/MO_Img/main//%E5%BC%82%E5%B8%B8%E4%BF%AE%E5%A4%8D_%E5%9B%A0%E7%AB%AF%E5%8F%A3%E6%98%A0%E5%B0%84%E9%80%A0%E6%88%90Nginx%E9%87%8D%E5%AE%9A%E5%90%91%E5%BC%82%E5%B8%B8/1.png" alt=""></p>
 </li>
 </ol>
 <h1 id="特征点"><a class="markdownIt-Anchor" href="#特征点">#</a> 【特征点】</h1>
@@ -194,7 +194,7 @@ MO-OF = </title>
 <ol>
 <li>
 <p>确定当前运行的 nginx 路径： <code>ps aux | grep nginx</code> （一般不需要此步骤）</p>
-<p><img data-src="https://raw.githubusercontent.com/MO-OF/MO_Img/main//%E5%9B%A0%E7%AB%AF%E5%8F%A3%E6%98%A0%E5%B0%84%E9%80%A0%E6%88%90Nginx%E9%87%8D%E5%AE%9A%E5%90%91%E5%BC%82%E5%B8%B8/2.png" alt=""></p>
+<p><img data-src="https://raw.githubusercontent.com/MO-OF/MO_Img/main//%E5%BC%82%E5%B8%B8%E4%BF%AE%E5%A4%8D_%E5%9B%A0%E7%AB%AF%E5%8F%A3%E6%98%A0%E5%B0%84%E9%80%A0%E6%88%90Nginx%E9%87%8D%E5%AE%9A%E5%90%91%E5%BC%82%E5%B8%B8/2.png" alt=""></p>
 </li>
 <li>
 <p>查找到 nginx 对应配置文件： <code>/usr/sbin/nginx -V</code></p>
@@ -203,7 +203,7 @@ MO-OF = </title>
 <li>一般直接跳过步骤 1，运行 <code>nginx -V</code>  即可</li>
 <li>查找 <code>--conf-path=xxxxx</code> ，这里 <code>xxx</code>  处对应的即为 nginx 配置文件路径</li>
 </ol>
-<p><img data-src="https://raw.githubusercontent.com/MO-OF/MO_Img/main//%E5%9B%A0%E7%AB%AF%E5%8F%A3%E6%98%A0%E5%B0%84%E9%80%A0%E6%88%90Nginx%E9%87%8D%E5%AE%9A%E5%90%91%E5%BC%82%E5%B8%B8/3.png" alt=""></p>
+<p><img data-src="https://raw.githubusercontent.com/MO-OF/MO_Img/main//%E5%BC%82%E5%B8%B8%E4%BF%AE%E5%A4%8D_%E5%9B%A0%E7%AB%AF%E5%8F%A3%E6%98%A0%E5%B0%84%E9%80%A0%E6%88%90Nginx%E9%87%8D%E5%AE%9A%E5%90%91%E5%BC%82%E5%B8%B8/3.png" alt=""></p>
 </li>
 <li>
 <p>此处将提出两种解决方法，分别为：关闭整个服务器中 nginx 重定向；关闭指定网页的 nginx 重定向</p>
@@ -211,18 +211,18 @@ MO-OF = </title>
 <li>
 <p>关闭整个服务器中 nginx 重定向</p>
 <p>修改步骤 2 中查到的 <code>etc/nginx/nginx.conf</code>  文件，在其 http 中添加 <code>absolute_redirect off;</code>  并重启 nginx 即可对该服务器中所有的网页服务均关闭绝对重定向，<strong>问题解决（可正常使用）</strong>。</p>
-<p><img data-src="https://raw.githubusercontent.com/MO-OF/MO_Img/main//%E5%9B%A0%E7%AB%AF%E5%8F%A3%E6%98%A0%E5%B0%84%E9%80%A0%E6%88%90Nginx%E9%87%8D%E5%AE%9A%E5%90%91%E5%BC%82%E5%B8%B8/4.png" alt=""></p>
+<p><img data-src="https://raw.githubusercontent.com/MO-OF/MO_Img/main//%E5%BC%82%E5%B8%B8%E4%BF%AE%E5%A4%8D_%E5%9B%A0%E7%AB%AF%E5%8F%A3%E6%98%A0%E5%B0%84%E9%80%A0%E6%88%90Nginx%E9%87%8D%E5%AE%9A%E5%90%91%E5%BC%82%E5%B8%B8/4.png" alt=""></p>
 </li>
 <li>
 <p>关闭指定网页的 nginx 重定向</p>
 <ol>
 <li>
 <p>进入 <code>etc/nginx/nginx.conf</code>  文件，查找 http 下的 <code>include</code> ，确定网页对应的配置文件路径</p>
-<p><img data-src="https://raw.githubusercontent.com/MO-OF/MO_Img/main//%E5%9B%A0%E7%AB%AF%E5%8F%A3%E6%98%A0%E5%B0%84%E9%80%A0%E6%88%90Nginx%E9%87%8D%E5%AE%9A%E5%90%91%E5%BC%82%E5%B8%B8/5.png" alt=""></p>
+<p><img data-src="https://raw.githubusercontent.com/MO-OF/MO_Img/main//%E5%BC%82%E5%B8%B8%E4%BF%AE%E5%A4%8D_%E5%9B%A0%E7%AB%AF%E5%8F%A3%E6%98%A0%E5%B0%84%E9%80%A0%E6%88%90Nginx%E9%87%8D%E5%AE%9A%E5%90%91%E5%BC%82%E5%B8%B8/5.png" alt=""></p>
 </li>
 <li>
 <p>找到指定网页的配置文件，在其 server 中添加 <code>absolute_redirect off;</code>  并重启 nginx 即可对该网页服务关闭绝对重定向，<strong>问题解决（可正常使用）。</strong></p>
-<p><img data-src="https://raw.githubusercontent.com/MO-OF/MO_Img/main//%E5%9B%A0%E7%AB%AF%E5%8F%A3%E6%98%A0%E5%B0%84%E9%80%A0%E6%88%90Nginx%E9%87%8D%E5%AE%9A%E5%90%91%E5%BC%82%E5%B8%B8/6.png" alt=""></p>
+<p><img data-src="https://raw.githubusercontent.com/MO-OF/MO_Img/main//%E5%BC%82%E5%B8%B8%E4%BF%AE%E5%A4%8D_%E5%9B%A0%E7%AB%AF%E5%8F%A3%E6%98%A0%E5%B0%84%E9%80%A0%E6%88%90Nginx%E9%87%8D%E5%AE%9A%E5%90%91%E5%BC%82%E5%B8%B8/6.png" alt=""></p>
 </li>
 </ol>
 </li>
@@ -245,7 +245,7 @@ MO-OF = </title>
       <i class="ic i-calendar-check"></i>
     </span>
     <span class="text">更新于</span>
-    <time title="修改时间：2022-09-24 19:19:09" itemprop="dateModified" datetime="2022-09-24T19:19:09+08:00">2022-09-24</time>
+    <time title="修改时间：2022-09-24 19:54:14" itemprop="dateModified" datetime="2022-09-24T19:54:14+08:00">2022-09-24</time>
   </span>
 </div>
 
@@ -276,7 +276,7 @@ MO-OF = </title>
   </li>
   <li class="link">
     <strong>本文链接：</strong>
-    <a href="https://mo-of.github.io/nginx_redirect_abnormal_due_to_port_mapping/" title="因端口映射造成Nginx重定向异常">https://mo-of.github.io/nginx_redirect_abnormal_due_to_port_mapping/</a>
+    <a href="https://mo-of.github.io/abnormal-repair/nginx_redirect_abnormal_due_to_port_mapping/" title="因端口映射造成Nginx重定向异常">https://mo-of.github.io/abnormal-repair/nginx_redirect_abnormal_due_to_port_mapping/</a>
   </li>
   <li class="license">
     <strong>版权声明： </strong>本站所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> 许可协议。转载请注明出处！
@@ -315,7 +315,7 @@ MO-OF = </title>
       </div>
       <div class="related panel pjax" data-title="系列文章">
         <ul>
-          <li class="active"><a href="/nginx_redirect_abnormal_due_to_port_mapping/" rel="bookmark" title="因端口映射造成Nginx重定向异常">因端口映射造成Nginx重定向异常</a></li>
+          <li class="active"><a href="/abnormal-repair/nginx_redirect_abnormal_due_to_port_mapping/" rel="bookmark" title="因端口映射造成Nginx重定向异常">因端口映射造成Nginx重定向异常</a></li>
         </ul>
       </div>
       <div class="overview panel" data-title="站点概览">
@@ -415,7 +415,7 @@ MO-OF = </title>
 <a href="/categories/abnormal-repair/" title="分类于 异常修复">异常修复</a>
 </div>
 
-    <span><a href="/nginx_redirect_abnormal_due_to_port_mapping/" title="因端口映射造成Nginx重定向异常">因端口映射造成Nginx重定向异常</a></span>
+    <span><a href="/abnormal-repair/nginx_redirect_abnormal_due_to_port_mapping/" title="因端口映射造成Nginx重定向异常">因端口映射造成Nginx重定向异常</a></span>
   </li>
 
   </ul>
@@ -458,7 +458,7 @@ MO-OF = </title>
   </div>
 <script data-config type="text/javascript">
   var LOCAL = {
-    path: 'nginx_redirect_abnormal_due_to_port_mapping/',
+    path: 'abnormal-repair/nginx_redirect_abnormal_due_to_port_mapping/',
     favicon: {
       show: "（●´3｀●）やれやれだぜ",
       hide: "(´Д｀)大変だ！"
