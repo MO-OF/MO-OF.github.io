@@ -1,0 +1,20 @@
+{
+    "version": "https://jsonfeed.org/version/1",
+    "title": " • All posts by \"端口映射\" tag",
+    "description": "",
+    "home_page_url": "https://mo-of.github.io",
+    "items": [
+        {
+            "id": "https://mo-of.github.io/nginx_redirect_abnormal_due_to_port_mapping/",
+            "url": "https://mo-of.github.io/nginx_redirect_abnormal_due_to_port_mapping/",
+            "title": "因端口映射造成Nginx重定向异常",
+            "date_published": "2022-09-23T06:39:01.000Z",
+            "content_html": "<h1 id=\"问题描述\"><a class=\"markdownIt-Anchor\" href=\"#问题描述\">#</a> 【问题描述】</h1>\n<ol>\n<li>\n<p>nginx 访问带目录的 url 时（例： <code>admin</code> )，若未在目录最后添加 <code>/</code> ，ngxin 则会进行一次默认的重定向（即： <code>ip:port/admin</code>  重定向为 <code>ip:port/admin/</code> ）</p>\n</li>\n<li>\n<p>该重重定向默认为<strong>绝对路径</strong>的重定向模式（在跳转中可以查看响应头 (Response Headers) 中的 <code>Location</code>  处看到完整的 url 链接确定）。</p>\n</li>\n<li>\n<p>但 nginx 对应的此绝对路径则会将对应的端口切换为其靶机内部所使用的端口。</p>\n</li>\n<li>\n<p>因此，若进行了端口映射的情况下，通过指定端口对靶机进行了一次请求，因 nginx 自身默认的绝对路径重定向导致相应的 url 端口进行了变动（由外网映射端口变更为内网端口）。则会造成 url 寻址错误。</p>\n<p><img data-src=\"https://raw.githubusercontent.com/MO-OF/MO_Img/main//%E5%9B%A0%E7%AB%AF%E5%8F%A3%E6%98%A0%E5%B0%84%E9%80%A0%E6%88%90Nginx%E9%87%8D%E5%AE%9A%E5%90%91%E5%BC%82%E5%B8%B8/1.png\" alt=\"\"></p>\n</li>\n</ol>\n<h1 id=\"特征点\"><a class=\"markdownIt-Anchor\" href=\"#特征点\">#</a> 【特征点】</h1>\n<ol>\n<li>存在一次 <code>字符串</code> 至 <code>字符串/</code>  的重定向请求</li>\n<li>响应头为 <code>ip:port/字符串/</code>  的绝对路径，且此处端口与请求 url 对应端口不一致</li>\n</ol>\n<h1 id=\"解决方法\"><a class=\"markdownIt-Anchor\" href=\"#解决方法\">#</a> 【解决方法】</h1>\n<p>此处需要关闭 nginx 默认开启的绝对重定向。即在该网页对应的 conf 文件中的 server 中添加 <code>absolute_redirect off;</code> ，或者在 nginx.conf 文件中的 http 中添加 <code>absolute_redirect off;</code>  对该服务器中所有的网页服务均关闭绝对重定向。</p>\n<ol>\n<li>\n<p>确定当前运行的 nginx 路径： <code>ps aux | grep nginx</code> （一般不需要此步骤）</p>\n<p><img data-src=\"https://raw.githubusercontent.com/MO-OF/MO_Img/main//%E5%9B%A0%E7%AB%AF%E5%8F%A3%E6%98%A0%E5%B0%84%E9%80%A0%E6%88%90Nginx%E9%87%8D%E5%AE%9A%E5%90%91%E5%BC%82%E5%B8%B8/2.png\" alt=\"\"></p>\n</li>\n<li>\n<p>查找到 nginx 对应配置文件： <code>/usr/sbin/nginx -V</code></p>\n<ol>\n<li>此处对应第一步的 nginx 对应路径</li>\n<li>一般直接跳过步骤 1，运行 <code>nginx -V</code>  即可</li>\n<li>查找 <code>--conf-path=xxxxx</code> ，这里 <code>xxx</code>  处对应的即为 nginx 配置文件路径</li>\n</ol>\n<p><img data-src=\"https://raw.githubusercontent.com/MO-OF/MO_Img/main//%E5%9B%A0%E7%AB%AF%E5%8F%A3%E6%98%A0%E5%B0%84%E9%80%A0%E6%88%90Nginx%E9%87%8D%E5%AE%9A%E5%90%91%E5%BC%82%E5%B8%B8/3.png\" alt=\"\"></p>\n</li>\n<li>\n<p>此处将提出两种解决方法，分别为：关闭整个服务器中 nginx 重定向；关闭指定网页的 nginx 重定向</p>\n<ol>\n<li>\n<p>关闭整个服务器中 nginx 重定向</p>\n<p>修改步骤 2 中查到的 <code>etc/nginx/nginx.conf</code>  文件，在其 http 中添加 <code>absolute_redirect off;</code>  并重启 nginx 即可对该服务器中所有的网页服务均关闭绝对重定向，<strong>问题解决（可正常使用）</strong>。</p>\n<p><img data-src=\"https://raw.githubusercontent.com/MO-OF/MO_Img/main//%E5%9B%A0%E7%AB%AF%E5%8F%A3%E6%98%A0%E5%B0%84%E9%80%A0%E6%88%90Nginx%E9%87%8D%E5%AE%9A%E5%90%91%E5%BC%82%E5%B8%B8/4.png\" alt=\"\"></p>\n</li>\n<li>\n<p>关闭指定网页的 nginx 重定向</p>\n<ol>\n<li>\n<p>进入 <code>etc/nginx/nginx.conf</code>  文件，查找 http 下的 <code>include</code> ，确定网页对应的配置文件路径</p>\n<p><img data-src=\"https://raw.githubusercontent.com/MO-OF/MO_Img/main//%E5%9B%A0%E7%AB%AF%E5%8F%A3%E6%98%A0%E5%B0%84%E9%80%A0%E6%88%90Nginx%E9%87%8D%E5%AE%9A%E5%90%91%E5%BC%82%E5%B8%B8/5.png\" alt=\"\"></p>\n</li>\n<li>\n<p>找到指定网页的配置文件，在其 server 中添加 <code>absolute_redirect off;</code>  并重启 nginx 即可对该网页服务关闭绝对重定向，<strong>问题解决（可正常使用）。</strong></p>\n<p><img data-src=\"https://raw.githubusercontent.com/MO-OF/MO_Img/main//%E5%9B%A0%E7%AB%AF%E5%8F%A3%E6%98%A0%E5%B0%84%E9%80%A0%E6%88%90Nginx%E9%87%8D%E5%AE%9A%E5%90%91%E5%BC%82%E5%B8%B8/6.png\" alt=\"\"></p>\n</li>\n</ol>\n</li>\n</ol>\n</li>\n</ol>\n",
+            "tags": [
+                "端口映射",
+                "重定向",
+                "Nginx"
+            ]
+        }
+    ]
+}

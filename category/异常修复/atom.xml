@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://mo-of.github.io</id>
+    <title> • Posts by &#34;异常修复&#34; category</title>
+    <link href="https://mo-of.github.io" />
+    <updated>2022-09-23T06:39:01.000Z</updated>
+    <category term="端口映射" />
+    <category term="重定向" />
+    <category term="Nginx" />
+    <entry>
+        <id>https://mo-of.github.io/nginx_redirect_abnormal_due_to_port_mapping/</id>
+        <title>因端口映射造成Nginx重定向异常</title>
+        <link rel="alternate" href="https://mo-of.github.io/nginx_redirect_abnormal_due_to_port_mapping/"/>
+        <content type="html">&lt;h1 id=&#34;问题描述&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#问题描述&#34;&gt;#&lt;/a&gt; 【问题描述】&lt;/h1&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;nginx 访问带目录的 url 时（例： &lt;code&gt;admin&lt;/code&gt; )，若未在目录最后添加 &lt;code&gt;/&lt;/code&gt; ，ngxin 则会进行一次默认的重定向（即： &lt;code&gt;ip:port/admin&lt;/code&gt;  重定向为 &lt;code&gt;ip:port/admin/&lt;/code&gt; ）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;该重重定向默认为&lt;strong&gt;绝对路径&lt;/strong&gt;的重定向模式（在跳转中可以查看响应头 (Response Headers) 中的 &lt;code&gt;Location&lt;/code&gt;  处看到完整的 url 链接确定）。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;但 nginx 对应的此绝对路径则会将对应的端口切换为其靶机内部所使用的端口。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;因此，若进行了端口映射的情况下，通过指定端口对靶机进行了一次请求，因 nginx 自身默认的绝对路径重定向导致相应的 url 端口进行了变动（由外网映射端口变更为内网端口）。则会造成 url 寻址错误。&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://raw.githubusercontent.com/MO-OF/MO_Img/main//%E5%9B%A0%E7%AB%AF%E5%8F%A3%E6%98%A0%E5%B0%84%E9%80%A0%E6%88%90Nginx%E9%87%8D%E5%AE%9A%E5%90%91%E5%BC%82%E5%B8%B8/1.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1 id=&#34;特征点&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#特征点&#34;&gt;#&lt;/a&gt; 【特征点】&lt;/h1&gt;
+&lt;ol&gt;
+&lt;li&gt;存在一次 &lt;code&gt;字符串&lt;/code&gt; 至 &lt;code&gt;字符串/&lt;/code&gt;  的重定向请求&lt;/li&gt;
+&lt;li&gt;响应头为 &lt;code&gt;ip:port/字符串/&lt;/code&gt;  的绝对路径，且此处端口与请求 url 对应端口不一致&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1 id=&#34;解决方法&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#解决方法&#34;&gt;#&lt;/a&gt; 【解决方法】&lt;/h1&gt;
+&lt;p&gt;此处需要关闭 nginx 默认开启的绝对重定向。即在该网页对应的 conf 文件中的 server 中添加 &lt;code&gt;absolute_redirect off;&lt;/code&gt; ，或者在 nginx.conf 文件中的 http 中添加 &lt;code&gt;absolute_redirect off;&lt;/code&gt;  对该服务器中所有的网页服务均关闭绝对重定向。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;确定当前运行的 nginx 路径： &lt;code&gt;ps aux | grep nginx&lt;/code&gt; （一般不需要此步骤）&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://raw.githubusercontent.com/MO-OF/MO_Img/main//%E5%9B%A0%E7%AB%AF%E5%8F%A3%E6%98%A0%E5%B0%84%E9%80%A0%E6%88%90Nginx%E9%87%8D%E5%AE%9A%E5%90%91%E5%BC%82%E5%B8%B8/2.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;查找到 nginx 对应配置文件： &lt;code&gt;/usr/sbin/nginx -V&lt;/code&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;此处对应第一步的 nginx 对应路径&lt;/li&gt;
+&lt;li&gt;一般直接跳过步骤 1，运行 &lt;code&gt;nginx -V&lt;/code&gt;  即可&lt;/li&gt;
+&lt;li&gt;查找 &lt;code&gt;--conf-path=xxxxx&lt;/code&gt; ，这里 &lt;code&gt;xxx&lt;/code&gt;  处对应的即为 nginx 配置文件路径&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://raw.githubusercontent.com/MO-OF/MO_Img/main//%E5%9B%A0%E7%AB%AF%E5%8F%A3%E6%98%A0%E5%B0%84%E9%80%A0%E6%88%90Nginx%E9%87%8D%E5%AE%9A%E5%90%91%E5%BC%82%E5%B8%B8/3.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;此处将提出两种解决方法，分别为：关闭整个服务器中 nginx 重定向；关闭指定网页的 nginx 重定向&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;关闭整个服务器中 nginx 重定向&lt;/p&gt;
+&lt;p&gt;修改步骤 2 中查到的 &lt;code&gt;etc/nginx/nginx.conf&lt;/code&gt;  文件，在其 http 中添加 &lt;code&gt;absolute_redirect off;&lt;/code&gt;  并重启 nginx 即可对该服务器中所有的网页服务均关闭绝对重定向，&lt;strong&gt;问题解决（可正常使用）&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://raw.githubusercontent.com/MO-OF/MO_Img/main//%E5%9B%A0%E7%AB%AF%E5%8F%A3%E6%98%A0%E5%B0%84%E9%80%A0%E6%88%90Nginx%E9%87%8D%E5%AE%9A%E5%90%91%E5%BC%82%E5%B8%B8/4.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;关闭指定网页的 nginx 重定向&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;进入 &lt;code&gt;etc/nginx/nginx.conf&lt;/code&gt;  文件，查找 http 下的 &lt;code&gt;include&lt;/code&gt; ，确定网页对应的配置文件路径&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://raw.githubusercontent.com/MO-OF/MO_Img/main//%E5%9B%A0%E7%AB%AF%E5%8F%A3%E6%98%A0%E5%B0%84%E9%80%A0%E6%88%90Nginx%E9%87%8D%E5%AE%9A%E5%90%91%E5%BC%82%E5%B8%B8/5.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;找到指定网页的配置文件，在其 server 中添加 &lt;code&gt;absolute_redirect off;&lt;/code&gt;  并重启 nginx 即可对该网页服务关闭绝对重定向，&lt;strong&gt;问题解决（可正常使用）。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://raw.githubusercontent.com/MO-OF/MO_Img/main//%E5%9B%A0%E7%AB%AF%E5%8F%A3%E6%98%A0%E5%B0%84%E9%80%A0%E6%88%90Nginx%E9%87%8D%E5%AE%9A%E5%90%91%E5%BC%82%E5%B8%B8/6.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+</content>
+        <category term="端口映射" />
+        <category term="重定向" />
+        <category term="Nginx" />
+        <updated>2022-09-23T06:39:01.000Z</updated>
+    </entry>
+</feed>
